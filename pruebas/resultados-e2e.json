@@ -1,0 +1,86 @@
+{
+  "fecha": "2026-10-24T14:11:18.317Z",
+  "navegador": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+  "resultados": [
+    {
+      "prueba": "Se muestra la Splash Screen al iniciar",
+      "resultado": "OK",
+      "detalle": ""
+    },
+    {
+      "prueba": "Se muestra la Home Screen con navegación tras el splash",
+      "resultado": "OK",
+      "detalle": ""
+    },
+    {
+      "prueba": "Los datos del servidor se muestran en la interfaz",
+      "resultado": "OK",
+      "detalle": "KPIs: 5 | 99 | $193.20 | 2"
+    },
+    {
+      "prueba": "Service Worker registrado y controlando la página",
+      "resultado": "OK",
+      "detalle": "cachés: lapistock-app-93e25df659, lapistock-api"
+    },
+    {
+      "prueba": "La notificación se muestra después de conceder el permiso",
+      "resultado": "OK",
+      "detalle": "permiso inicial=default, panel SW=\"Activo y controlando la app\", mostradas=[\"Prueba local\"]"
+    },
+    {
+      "prueba": "Suscripción a notificaciones push del servidor",
+      "resultado": "OK",
+      "detalle": "Suscrito: el servidor avisará de bajo stock aunque la app esté cerrada."
+    },
+    {
+      "prueba": "El servidor envía una push y el Service Worker la muestra",
+      "resultado": "OK",
+      "detalle": "El servidor envió 1 notificación(es) push."
+    },
+    {
+      "prueba": "La cámara captura una foto con el permiso autorizado",
+      "resultado": "OK",
+      "detalle": "video=true, fotos en IndexedDB=[{\"tipo\":\"image/jpeg\",\"bytes\":7508}]"
+    },
+    {
+      "prueba": "Notificación local de bajo stock tras una salida",
+      "resultado": "OK",
+      "detalle": ""
+    },
+    {
+      "prueba": "La app abre sin conexión desde la caché del Service Worker",
+      "resultado": "OK",
+      "detalle": ""
+    },
+    {
+      "prueba": "La app informa cuando una función necesita conexión",
+      "resultado": "OK",
+      "detalle": "Resumen: \"📡 El resumen lo calcula el servidor: necesita conexión. Se muestra la última copia guardada.\", botón deshabilitado=true, avisos en Sync=2"
+    },
+    {
+      "prueba": "Los registros sin conexión quedan en la cola de IndexedDB",
+      "resultado": "OK",
+      "detalle": "2 operaciones en cola"
+    },
+    {
+      "prueba": "Los datos locales persisten después de recargar",
+      "resultado": "OK",
+      "detalle": "cola=2, stock local Tombow=8, vista recordada (localStorage)=\"movimientos\""
+    },
+    {
+      "prueba": "Al reconectar, los pendientes se envían al servidor automáticamente",
+      "resultado": "OK",
+      "detalle": "cola vacía=true, registros en servidor=1, stock servidor=8"
+    },
+    {
+      "prueba": "Los reintentos de sincronización no duplican registros",
+      "resultado": "OK",
+      "detalle": "lápices Tombow=1, stock=8, movimientos=1"
+    },
+    {
+      "prueba": "El Service Worker se actualiza tras confirmar el aviso",
+      "resultado": "OK",
+      "detalle": "aviso=true, versión nueva activa=true"
+    }
+  ]
+}

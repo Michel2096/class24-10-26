@@ -1,0 +1,48 @@
+# ===== Monorepo: api/ + front/ + docs/ + pruebas/ =====
+
+# Dependencias
+node_modules/
+
+# Builds
+dist/
+dist-ssr/
+*.tsbuildinfo
+
+# Variables de entorno
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Cobertura de pruebas
+coverage/
+.nyc_output/
+
+# Base de datos SQLite local (se crea sola al arrancar la API)
+api/data/*.db
+api/data/*.db-*
+
+# Claves VAPID de Web Push (privadas, se generan solas)
+api/data/vapid.json
+
+# Archivos temporales y de sistema
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Editores
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
