@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-10-24T14:11:18.317Z",
+  "fecha": "2026-11-07T14:41:11.011Z",
   "navegador": "C:/Program Files/Google/Chrome/Application/chrome.exe",
   "resultados": [
     {
@@ -20,7 +20,7 @@
     {
       "prueba": "Service Worker registrado y controlando la página",
       "resultado": "OK",
-      "detalle": "cachés: lapistock-app-93e25df659, lapistock-api"
+      "detalle": "cachés: lapistock-app-e8e8e9b9b3, lapistock-api"
     },
     {
       "prueba": "La notificación se muestra después de conceder el permiso",
@@ -40,7 +40,7 @@
     {
       "prueba": "La cámara captura una foto con el permiso autorizado",
       "resultado": "OK",
-      "detalle": "video=true, fotos en IndexedDB=[{\"tipo\":\"image/jpeg\",\"bytes\":7508}]"
+      "detalle": "video=true, fotos en IndexedDB=[{\"tipo\":\"image/jpeg\",\"bytes\":6857}]"
     },
     {
       "prueba": "Notificación local de bajo stock tras una salida",

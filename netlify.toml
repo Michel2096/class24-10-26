@@ -1,0 +1,56 @@
+# Configuración de publicación de LapiStock en Netlify.
+[build]
+  # Instala dependencias de api/ y front/ y compila la PWA (tsc + vite + precache del SW).
+  command = "npm run instalar && npm run build"
+  publish = "front/dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  # node:sqlite requiere Node 22.13 o superior (build y funciones).
+  NODE_VERSION = "22"
+
+[functions]
+  node_bundler = "esbuild"
+
+# 1) La API REST la atiende la función (mismo origen → el Service Worker la cachea igual).
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+  force = true
+
+# 2) Fallback SPA: cualquier otra ruta abre index.html.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# El Service Worker, el HTML y el manifest no se cachean: así se detectan las versiones nuevas.
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+    Service-Worker-Allowed = "/"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Cache-Control = "no-cache"
+    Content-Type = "application/manifest+json"
+
+# Archivos con hash del build: caché de un año.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

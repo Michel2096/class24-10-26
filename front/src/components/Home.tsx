@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Logo } from './Logo';
-import { LapizForm } from './LapizForm';
 import { VistaInicio, VistaInventario, VistaMovimientos, VistaResumen, VistaSync } from './vistas';
 import { escribir, leer } from '../lib/preferencias';
 import { aplicarActualizacion } from '../lib/sw';
@@ -18,6 +17,9 @@ const NAV: { id: Vista; texto: string; icono: string }[] = [
   { id: 'resumen', texto: 'Resumen', icono: '▤' },
   { id: 'sync', texto: 'Sync', icono: '⟳' },
 ];
+
+// Carga diferida (mejora Lighthouse): el formulario y la cámara solo se descargan al abrirlos.
+const LapizForm = lazy(() => import('./LapizForm').then((m) => ({ default: m.LapizForm })));
 
 const VISTAS = NAV.map((n) => n.id);
 
@@ -123,12 +125,14 @@ export function Home({ inv }: { inv: Inventario }) {
       </nav>
 
       {form.abierto && (
-        <LapizForm
-          inicial={form.lapiz}
-          fotoInicial={form.lapiz && inv.fotos[form.lapiz.id]}
-          onCerrar={() => setForm({ abierto: false })}
-          onGuardar={(datos, foto) => (form.lapiz ? inv.editarLapiz(form.lapiz.id, datos, foto) : inv.crearLapiz(datos, foto))}
-        />
+        <Suspense fallback={null}>
+          <LapizForm
+            inicial={form.lapiz}
+            fotoInicial={form.lapiz && inv.fotos[form.lapiz.id]}
+            onCerrar={() => setForm({ abierto: false })}
+            onGuardar={(datos, foto) => (form.lapiz ? inv.editarLapiz(form.lapiz.id, datos, foto) : inv.crearLapiz(datos, foto))}
+          />
+        </Suspense>
       )}
     </div>
   );

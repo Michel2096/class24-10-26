@@ -303,6 +303,20 @@ button.chip {
   margin: 0;
 }
 
+/* Bienvenida y versión (Inicio) */
+.bienvenida {
+  margin: 0;
+  padding: 10px 14px;
+  border-left: 4px solid var(--lapiz);
+  border-radius: 8px;
+  background: var(--superficie);
+  box-shadow: var(--sombra);
+  font-size: 0.95rem;
+}
+.version {
+  text-align: center;
+}
+
 /* KPIs */
 .kpis {
   display: grid;

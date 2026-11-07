@@ -4,7 +4,7 @@ import { escribir, leer } from '../lib/preferencias';
 import { ETIQUETA_TIPO, TIPOS, type Lapiz, type ResumenServidor, type TipoLapiz } from '../types';
 import type { Inventario } from '../hooks/useInventario';
 import type { Vista } from './Home';
-import { Miniatura } from './Camara';
+import { Miniatura } from './Miniatura';
 import { PanelPwa, RequiereConexion } from './PanelPwa';
 
 const dinero = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' });
@@ -35,6 +35,9 @@ export function VistaInicio({ inv, ir, onNuevo }: { inv: Inventario; ir: (v: Vis
   ];
   return (
     <section className="vista">
+      <p className="bienvenida">
+        <strong>Bienvenido a LapiStock.</strong> Controla el inventario de lápices, incluso sin conexión.
+      </p>
       <div className="kpis">
         <div className="kpi">
           <span className="kpi__valor">{e.referencias}</span>
@@ -89,6 +92,8 @@ export function VistaInicio({ inv, ir, onNuevo }: { inv: Inventario; ir: (v: Vis
           </ul>
         </div>
       )}
+
+      <p className="nota version">LapiStock v{__APP_VERSION__}</p>
     </section>
   );
 }

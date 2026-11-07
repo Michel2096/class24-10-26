@@ -1,0 +1,66 @@
+{
+  "fecha": "2026-11-07T14:38:48.094Z",
+  "navegador": "Chrome/156.0.8078.74",
+  "resultados": [
+    {
+      "id": "F1",
+      "prueba": "Navegación entre las 5 pantallas (barra inferior)",
+      "resultado": "APROBADO",
+      "detalle": "Inicio=ok, Inventario=ok, Movimientos=ok, Resumen=ok, Sync=ok"
+    },
+    {
+      "id": "F2",
+      "prueba": "El formulario rechaza marca y modelo vacíos",
+      "resultado": "APROBADO",
+      "detalle": "Marca y modelo son obligatorios"
+    },
+    {
+      "id": "F3",
+      "prueba": "El formulario rechaza una cantidad negativa",
+      "resultado": "APROBADO",
+      "detalle": "La cantidad debe ser un entero ≥ 0"
+    },
+    {
+      "id": "F4",
+      "prueba": "Registro de un lápiz nuevo (local + servidor)",
+      "resultado": "APROBADO",
+      "detalle": "referencias=6, servidor: Staedtler Noris QA stock=12"
+    },
+    {
+      "id": "F5",
+      "prueba": "Consulta: la búsqueda filtra el inventario",
+      "resultado": "APROBADO",
+      "detalle": "tarjetas visibles=1"
+    },
+    {
+      "id": "F6",
+      "prueba": "Edición de un lápiz (local + servidor)",
+      "resultado": "APROBADO",
+      "detalle": "servidor: Noris QA Editado $2.25"
+    },
+    {
+      "id": "F7",
+      "prueba": "Eliminación de un lápiz (local + servidor)",
+      "resultado": "APROBADO",
+      "detalle": "referencias en servidor=5, cola local=[]"
+    },
+    {
+      "id": "F8",
+      "prueba": "Validación del servidor: salida sin stock suficiente",
+      "resultado": "APROBADO",
+      "detalle": "HTTP 409: Stock insuficiente: hay 48 y se intentan sacar 148"
+    },
+    {
+      "id": "C1",
+      "prueba": "Diseño adaptable: en ≥ 900 px la navegación pasa a pestañas superiores sin scroll horizontal",
+      "resultado": "APROBADO",
+      "detalle": ""
+    },
+    {
+      "id": "I1",
+      "prueba": "La PWA cumple los criterios de instalación (manifest + iconos + SW)",
+      "resultado": "APROBADO",
+      "detalle": "name=\"LapiStock\", display=standalone, iconos=4, errores de instalación=ninguno"
+    }
+  ]
+}

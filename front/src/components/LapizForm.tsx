@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { ETIQUETA_TIPO, TIPOS, type Lapiz, type LapizNuevo, type TipoLapiz } from '../types';
-import { Camara, Miniatura } from './Camara';
+import { Camara } from './Camara';
+import { Miniatura } from './Miniatura';
 
 interface Props {
   inicial?: Lapiz;

@@ -41,18 +41,59 @@ let enCurso: Promise<ResultadoSync> | null = null;
  *     `duplicado: true` en lugar de crear otro registro.
  */
 export function sincronizar(): Promise<ResultadoSync> {
-  enCurso ??= ejecutar().finally(() => {
+  // Si se pide otra sincronización mientras una está en curso (p. ej. una baja justo después de
+  // una edición), se hace una pasada más al terminar en vez de esperar al reintento automático.
+  if (enCurso) {
+    repetir = true;
+    return enCurso;
+  }
+  enCurso = (async () => {
+    const total: ResultadoSync = { enviadas: 0, duplicadas: 0, errores: 0, restantes: 0, sinConexion: false, descargado: false };
+    do {
+      repetir = false;
+      const r = await ejecutar();
+      Object.assign(total, r, { enviadas: total.enviadas + r.enviadas, duplicadas: total.duplicadas + r.duplicadas, errores: total.errores + r.errores });
+    } while (repetir && !total.sinConexion);
+    return total;
+  })().finally(() => {
     enCurso = null;
   });
   return enCurso;
 }
+let repetir = false;
 
 async function ejecutar(): Promise<ResultadoSync> {
   const r: ResultadoSync = { enviadas: 0, duplicadas: 0, errores: 0, restantes: 0, sinConexion: false, descargado: false };
-  const cola = (await idb.todos('outbox')).sort((a, b) => a.seq! - b.seq!);
+  // Se repite mientras lleguen operaciones nuevas durante el envío (p. ej. una baja hecha justo
+  // después de una edición): antes quedaban en la cola hasta el siguiente reintento automático.
+  const intentadas = new Set<number>();
+  while (!r.sinConexion) {
+    const cola = (await idb.todos('outbox'))
+      .filter((o) => o.estado !== 'error' && !intentadas.has(o.seq!))
+      .sort((a, b) => a.seq! - b.seq!);
+    if (!cola.length) break;
+    await enviarCola(cola, intentadas, r);
+  }
 
+  const quedan = await idb.todos('outbox');
+  r.restantes = quedan.filter((o) => o.estado === 'pendiente').length;
+
+  // Sin operaciones pendientes, el servidor es la fuente de verdad: se descarga el estado real.
+  if (!r.sinConexion && r.restantes === 0) {
+    try {
+      await descargar();
+      r.descargado = true;
+    } catch {
+      r.sinConexion = true;
+    }
+  }
+  return r;
+}
+
+/** Envía en orden un lote de la cola; se detiene ante el primer fallo de red para respetar el orden. */
+async function enviarCola(cola: Operacion[], intentadas: Set<number>, r: ResultadoSync) {
   for (const op of cola) {
-    if (op.estado === 'error') continue;
+    intentadas.add(op.seq!);
     try {
       const duplicada = await enviar(op);
       await idb.borrar('outbox', op.seq!);
@@ -73,23 +114,9 @@ async function ejecutar(): Promise<ResultadoSync> {
         ultimo_error: e instanceof Error ? e.message : String(e),
       });
       r.sinConexion = true;
-      break;
+      return;
     }
   }
-
-  const quedan = await idb.todos('outbox');
-  r.restantes = quedan.filter((o) => o.estado === 'pendiente').length;
-
-  // Sin operaciones pendientes, el servidor es la fuente de verdad: se descarga el estado real.
-  if (!r.sinConexion && r.restantes === 0) {
-    try {
-      await descargar();
-      r.descargado = true;
-    } catch {
-      r.sinConexion = true;
-    }
-  }
-  return r;
 }
 
 /** Trae inventario y movimientos del servidor y reemplaza la copia local. */

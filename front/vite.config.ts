@@ -5,6 +5,7 @@ import { join, relative, sep } from 'node:path'
 import { defineConfig, type Plugin } from 'vite'
 
 const API = process.env.API_URL ?? 'http://localhost:3000'
+const { version } = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8')) as { version: string }
 
 /**
  * Tras el build, inyecta en dist/sw.js la lista de archivos generados (con hash) para
@@ -41,6 +42,8 @@ function precacheServiceWorker(): Plugin {
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), precacheServiceWorker()],
+  // Versión visible en la app (Inicio): sirve para comprobar qué build está activo tras actualizar.
+  define: { __APP_VERSION__: JSON.stringify(version) },
   server: { proxy: { '/api': API } },
   preview: { proxy: { '/api': API } },
 })

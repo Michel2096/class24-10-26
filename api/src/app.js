@@ -1,4 +1,5 @@
 import express from 'express';
+import compression from 'compression';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -65,8 +66,10 @@ function validarLapiz(body) {
   };
 }
 
-export function createApp(db, { staticDir, push } = {}) {
+export function createApp(db, { staticDir, push, comprimir = true } = {}) {
   const app = express();
+  // Mejora Lighthouse «Enable text compression»: gzip para HTML, JS, CSS y JSON.
+  if (comprimir) app.use(compression());
   app.use(express.json({ limit: '100kb' }));
 
   // CORS abierto: permite consumir la API desde el servidor de desarrollo de Vite u otro host.
@@ -260,6 +263,8 @@ export function createApp(db, { staticDir, push } = {}) {
       express.static(staticDir, {
         setHeaders(res, path) {
           if (/(sw\.js|\.html|\.webmanifest)$/.test(path)) res.set('Cache-Control', 'no-cache');
+          // Mejora Lighthouse «efficient cache policy»: los archivos con hash nunca cambian.
+          else if (/[\\/]assets[\\/]/.test(path)) res.set('Cache-Control', 'public, max-age=31536000, immutable');
         },
       }),
     );

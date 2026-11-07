@@ -10,9 +10,14 @@
     "build": "npm --prefix front run build",
     "start": "npm --prefix api start",
     "test": "npm --prefix api test",
-    "test:e2e": "node pruebas/e2e-offline.mjs"
+    "test:e2e": "node pruebas/e2e-offline.mjs",
+    "test:funcional": "node pruebas/funcionales.mjs",
+    "test:funcional:edge": "node -e \"process.env.NAVEGADOR='edge';import('./pruebas/funcionales.mjs')\""
   },
   "engines": {
     "node": ">=22.13"
+  },
+  "dependencies": {
+    "serverless-http": "^3.2.0"
   }
 }

@@ -57,6 +57,40 @@ npm test                # pruebas de la API (node:test)
 npm run build && npm run test:e2e   # E2E en Chrome headless: genera docs/capturas y pruebas/resultados-e2e.json
 ```
 
+### Pruebas funcionales y de compatibilidad (Actividad 14)
+
+```bash
+npm run build
+npm run test:funcional        # Chrome: formularios, CRUD, navegación, diseño adaptable, instalabilidad
+npm run test:funcional:edge   # lo mismo en Microsoft Edge
+```
+
+Resultados en `pruebas/resultados-funcionales-*.json`, capturas en `docs/capturas/funcionales/` y
+reportes de Lighthouse (antes/después de las mejoras) en `docs/lighthouse/`.
+
+## Publicación en Netlify
+
+El repositorio incluye `netlify.toml`, así que Netlify toma la configuración solo:
+
+| Parámetro | Valor |
+|---|---|
+| Build command | `npm run instalar && npm run build` |
+| Publish directory | `front/dist` |
+| Functions directory | `netlify/functions` (la API Express corre en `api.mjs` con `serverless-http`) |
+| Node | `NODE_VERSION = 22` (requerido por `node:sqlite`) |
+| Redirecciones | `/api/*` → función `api`; `/*` → `index.html` (SPA) |
+| Cabeceras | `sw.js`, `index.html` y manifest sin caché; `/assets/*` caché de 1 año |
+
+1. Sube el proyecto a GitHub.
+2. En [app.netlify.com](https://app.netlify.com): *Add new site → Import an existing project → GitHub* y elige el repositorio.
+3. Deja los valores que lee de `netlify.toml` y pulsa *Deploy*.
+4. (Opcional, para push estable) *Site configuration → Environment variables*: `VAPID_PUBLIC_KEY` y
+   `VAPID_PRIVATE_KEY` (genéralas con `npx web-push generate-vapid-keys`).
+5. Cada `git push` a `main` publica una versión nueva; el Service Worker la detecta y muestra «Actualizar».
+
+> En Netlify la base SQLite vive en `/tmp` de la función: se reinicia con los datos de ejemplo en cada
+> arranque en frío. Los datos del usuario se conservan en IndexedDB del dispositivo.
+
 ### Cómo probar el modo offline a mano
 
 1. `npm run build && npm start` y abre http://localhost:3000 en Chrome.
