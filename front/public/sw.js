@@ -15,7 +15,9 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches
       .open(CACHE_APP)
-      .then((cache) => cache.addAll(recursos)),
+      // v1.1 (corrección): `cache: 'reload'` evita que el SW nuevo guarde copias viejas que
+      // estuvieran en la caché HTTP del navegador (HTML de la versión anterior).
+      .then((cache) => cache.addAll(recursos.map((r) => new Request(r, { cache: 'reload' })))),
   );
 });
 
@@ -66,8 +68,9 @@ async function redPrimeroApi(request) {
 async function navegacion(request) {
   try {
     const res = await fetch(request);
-    const cache = await caches.open(CACHE_APP);
-    cache.put('/index.html', res.clone());
+    // v1.1 (corrección): solo se guarda una respuesta válida; antes un 404/500 durante una
+    // publicación reemplazaba el index.html en caché y la app dejaba de abrir sin conexión.
+    if (res.ok) (await caches.open(CACHE_APP)).put('/index.html', res.clone());
     return res;
   } catch {
     return (await caches.match('/index.html')) ?? (await caches.match('/')) ?? Response.error();
