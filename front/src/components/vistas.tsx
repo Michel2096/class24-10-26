@@ -36,7 +36,7 @@ export function VistaInicio({ inv, ir, onNuevo }: { inv: Inventario; ir: (v: Vis
   return (
     <section className="vista">
       <p className="bienvenida">
-        <strong>Bienvenido a LapiStock.</strong> Controla el inventario de lápices, incluso sin conexión.
+        <strong>¡Hola! Bienvenido a LapiStock 1.1.</strong> Nuevo: exporta tu inventario a CSV desde la pestaña Inventario.
       </p>
       <div className="kpis">
         <div className="kpi">
@@ -156,6 +156,12 @@ export function VistaInventario({ inv, onNuevo, onEditar }: { inv: Inventario; o
           + Nuevo
         </button>
       </div>
+
+      {inv.lapices.length > 0 && (
+        <p className="nota conteo" aria-live="polite">
+          Mostrando {filtrados.length} de {inv.lapices.length} lápices
+        </p>
+      )}
 
       {filtrados.length === 0 ? (
         <p className="vacio">{inv.lapices.length ? 'Ningún lápiz coincide con el filtro.' : 'Aún no hay lápices registrados.'}</p>
