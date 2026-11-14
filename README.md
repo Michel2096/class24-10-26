@@ -68,6 +68,20 @@ npm run test:funcional:edge   # lo mismo en Microsoft Edge
 Resultados en `pruebas/resultados-funcionales-*.json`, capturas en `docs/capturas/funcionales/` y
 reportes de Lighthouse (antes/después de las mejoras) en `docs/lighthouse/`.
 
+## Versiones y liberación
+
+Versión actual: **1.1.0** — ver [CHANGELOG](CHANGELOG.md). Etiquetas: `v1.0.0`, `v1.1.0-rc.1`, `v1.1.0`.
+
+1. Rama de trabajo desde `main` (`feature/vX.Y.Z`), commits por cambio y Pull Request / merge `--no-ff`.
+2. Subir la versión en `package.json` y `front/package.json`, actualizar `CHANGELOG.md`.
+3. Etiquetar la candidata (`vX.Y.Z-rc.N`), compilarla y validarla:
+   `npm test`, `npm run test:e2e`, `npm run test:funcional` y
+   `npm run test:actualizacion -- <dist-anterior> <dist-nueva>` (actualización + reversión del SW).
+4. Si todo pasa: etiqueta `vX.Y.Z` y `git push origin main --tags` → Netlify publica.
+5. **Reversión:** en Netlify *Deploys → (deploy anterior) → Publish deploy*, o
+   `git revert -m 1 <merge>` y push. El SW trata la versión anterior como «nueva» y los datos
+   de IndexedDB/localStorage se conservan.
+
 ## Publicación en Netlify
 
 El repositorio incluye `netlify.toml`, así que Netlify toma la configuración solo:
