@@ -1,6 +1,6 @@
 {
   "name": "lapistock",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "PWA de inventario de lápices (React + Express + SQLite) con soporte offline",
   "scripts": {
