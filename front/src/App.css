@@ -821,3 +821,8 @@ label {
     animation: none;
   }
 }
+
+/* v1.1: contador de resultados en Inventario */
+.conteo {
+  margin: 0 0 0.5rem;
+}

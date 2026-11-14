@@ -1,6 +1,6 @@
 {
   "name": "lapistock",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "PWA de inventario de lápices (React + Express + SQLite) con soporte offline",
   "scripts": {
@@ -12,7 +12,8 @@
     "test": "npm --prefix api test",
     "test:e2e": "node pruebas/e2e-offline.mjs",
     "test:funcional": "node pruebas/funcionales.mjs",
-    "test:funcional:edge": "node -e \"process.env.NAVEGADOR='edge';import('./pruebas/funcionales.mjs')\""
+    "test:funcional:edge": "node -e \"process.env.NAVEGADOR='edge';import('./pruebas/funcionales.mjs')\"",
+    "test:actualizacion": "node pruebas/actualizacion.mjs"
   },
   "engines": {
     "node": ">=22.13"
