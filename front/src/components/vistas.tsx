@@ -100,6 +100,19 @@ export function VistaInicio({ inv, ir, onNuevo }: { inv: Inventario; ir: (v: Vis
 
 /* ───────────────────────── Inventario ───────────────────────── */
 
+/** v1.1: descarga la lista (filtrada) como CSV. Se genera en el navegador, así que funciona sin conexión. */
+function exportarCsv(lapices: Lapiz[]) {
+  const columnas: (keyof Lapiz)[] = ['marca', 'modelo', 'tipo', 'dureza', 'color', 'cantidad', 'stock_minimo', 'precio'];
+  const celda = (v: unknown) => `"${String(v ?? '').replaceAll('"', '""')}"`;
+  const filas = [columnas.join(','), ...lapices.map((l) => columnas.map((c) => celda(l[c])).join(','))];
+  // BOM para que Excel reconozca los acentos (UTF-8).
+  const BOM = String.fromCharCode(0xfeff);
+  const url = URL.createObjectURL(new Blob([BOM + filas.join(String.fromCharCode(13, 10))], { type: 'text/csv;charset=utf-8' }));
+  const a = Object.assign(document.createElement('a'), { href: url, download: `inventario-lapices-${new Date().toISOString().slice(0, 10)}.csv` });
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 export function VistaInventario({ inv, onNuevo, onEditar }: { inv: Inventario; onNuevo: () => void; onEditar: (l: Lapiz) => void }) {
   const [busqueda, setBusqueda] = useState('');
   const [tipo, setTipo] = useState<TipoLapiz | ''>(() => leer('filtroTipo', ''));
@@ -136,6 +149,9 @@ export function VistaInventario({ inv, onNuevo, onEditar }: { inv: Inventario; o
         <label className="check">
           <input type="checkbox" checked={soloBajos} onChange={(e) => setSoloBajos(e.target.checked)} /> Solo bajo stock
         </label>
+        <button className="btn btn--fantasma" onClick={() => exportarCsv(filtrados)} disabled={!filtrados.length} title="Descargar la lista filtrada en formato CSV">
+          ⬇ Exportar CSV
+        </button>
         <button className="btn" onClick={onNuevo}>
           + Nuevo
         </button>
