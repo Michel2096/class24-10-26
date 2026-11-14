@@ -1,0 +1,59 @@
+{
+  "fecha": "2026-11-14T16:49:07.429Z",
+  "resultados": [
+    {
+      "id": "U1",
+      "prueba": "Versión anterior publicada, SW activo y datos del usuario registrados",
+      "resultado": "APROBADO",
+      "detalle": "LapiStock v1.0.0"
+    },
+    {
+      "id": "U2",
+      "prueba": "El Service Worker detecta la nueva versión y muestra «Actualizar»",
+      "resultado": "APROBADO",
+      "detalle": "aviso=true, SW nuevo en espera=true"
+    },
+    {
+      "id": "U3",
+      "prueba": "Tras «Actualizar» se ejecuta la versión nueva y se borra la caché anterior",
+      "resultado": "APROBADO",
+      "detalle": "LapiStock v1.0.0 → LapiStock v1.1.0; cachés=lapistock-api, lapistock-app-2cfb711d2a"
+    },
+    {
+      "id": "U4",
+      "prueba": "La versión actualizada conserva los datos locales (IndexedDB y localStorage)",
+      "resultado": "APROBADO",
+      "detalle": "lápices en IndexedDB=6 (incluye «Dato del usuario»), claves localStorage=[\"lapistock:log\",\"lapistock:tema\",\"lapistock:ultimoSync\"]"
+    },
+    {
+      "id": "U5",
+      "prueba": "La nueva funcionalidad (Exportar CSV) aparece en la versión nueva",
+      "resultado": "APROBADO",
+      "detalle": ""
+    },
+    {
+      "id": "U5b",
+      "prueba": "Exportar CSV descarga el inventario completo y correcto",
+      "resultado": "APROBADO",
+      "detalle": "6 filas; cabecera=marca,modelo,tipo,dureza,color,cantidad,stock_minimo,precio"
+    },
+    {
+      "id": "U6",
+      "prueba": "Funciones anteriores (búsqueda y filtros) siguen operando con los datos previos",
+      "resultado": "APROBADO",
+      "detalle": "Mostrando 1 de 6 lápices"
+    },
+    {
+      "id": "R1",
+      "prueba": "Reversión: al republicar v1.0.0 el SW la detecta y la app vuelve a la versión anterior",
+      "resultado": "APROBADO",
+      "detalle": "LapiStock v1.1.0 → LapiStock v1.0.0"
+    },
+    {
+      "id": "R2",
+      "prueba": "Reversión: los datos locales se conservan",
+      "resultado": "APROBADO",
+      "detalle": "lápices en IndexedDB=6"
+    }
+  ]
+}
