@@ -12,7 +12,8 @@
     "test": "npm --prefix api test",
     "test:e2e": "node pruebas/e2e-offline.mjs",
     "test:funcional": "node pruebas/funcionales.mjs",
-    "test:funcional:edge": "node -e \"process.env.NAVEGADOR='edge';import('./pruebas/funcionales.mjs')\""
+    "test:funcional:edge": "node -e \"process.env.NAVEGADOR='edge';import('./pruebas/funcionales.mjs')\"",
+    "test:actualizacion": "node pruebas/actualizacion.mjs"
   },
   "engines": {
     "node": ">=22.13"
